@@ -8,7 +8,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
   :root {
     --bg: #0a0a0f;
     --surface: #13131a;
@@ -19,188 +18,46 @@
     --muted: #6b6b80;
     --card: #18181f;
   }
+  body { background: var(--bg); color: var(--text); font-family: 'Space Grotesk', sans-serif; min-height: 100vh; padding: 0 1rem 6rem; }
+  header { text-align: center; padding: 3rem 1rem 2rem; border-bottom: 1px solid var(--border); margin-bottom: 2rem; }
+  .tag { display: inline-block; font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 0.15em; color: var(--accent); border: 1px solid var(--accent); padding: 4px 12px; border-radius: 2px; margin-bottom: 1rem; text-transform: uppercase; }
+  h1 { font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 700; line-height: 1.1; letter-spacing: -0.02em; }
+  h1 span { color: var(--accent); }
+  .subtitle { color: var(--muted); font-size: 15px; margin-top: 0.75rem; }
+  .search-wrap { max-width: 560px; margin: 0 auto 2rem; position: relative; }
+  .search-wrap svg { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--muted); pointer-events: none; }
+  input[type="text"] { width: 100%; background: var(--surface); border: 1px solid var(--border); border-radius: 4px; color: var(--text); font-family: 'Space Grotesk', sans-serif; font-size: 15px; padding: 12px 16px 12px 44px; outline: none; transition: border-color 0.15s; }
+  input[type="text"]:focus { border-color: var(--accent); }
+  input[type="text"]::placeholder { color: var(--muted); }
+  .stats { text-align: center; font-family: 'Space Mono', monospace; font-size: 12px; color: var(--muted); margin-bottom: 1.5rem; letter-spacing: 0.05em; }
+  .stats span { color: var(--accent); font-weight: 700; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px; max-width: 1100px; margin: 0 auto; }
+  .game-card { background: var(--card); border: 1px solid var(--border); border-radius: 4px; padding: 14px 16px; display: flex; align-items: center; gap: 12px; transition: border-color 0.15s, background 0.15s; cursor: pointer; user-select: none; -webkit-tap-highlight-color: transparent; }
+  .game-card:hover { border-color: var(--accent); background: #1e1e28; }
+  .game-card:active { transform: scale(0.98); }
+  .game-num { font-family: 'Space Mono', monospace; font-size: 10px; color: var(--muted); min-width: 28px; letter-spacing: 0.05em; }
+  .game-name { font-size: 14px; font-weight: 500; color: var(--text); line-height: 1.3; word-break: break-word; flex: 1; }
+  .copy-icon { color: var(--muted); flex-shrink: 0; transition: color 0.15s; }
+  .game-card:hover .copy-icon { color: var(--accent); }
+  .empty { text-align: center; color: var(--muted); padding: 4rem 1rem; grid-column: 1 / -1; font-family: 'Space Mono', monospace; font-size: 13px; }
+  .empty strong { display: block; color: var(--text); font-size: 16px; margin-bottom: 0.5rem; font-family: 'Space Grotesk', sans-serif; }
 
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'Space Grotesk', sans-serif;
-    min-height: 100vh;
-    padding: 0 1rem 4rem;
-  }
+  /* Pop-up */
+  .popup { position: fixed; bottom: 0; left: 0; right: 0; background: #1a1a24; border-top: 1px solid var(--border); padding: 1.25rem 1.5rem; transform: translateY(100%); transition: transform 0.25s cubic-bezier(0.4,0,0.2,1); z-index: 100; }
+  .popup.visible { transform: translateY(0); }
+  .popup-label { font-family: 'Space Mono', monospace; font-size: 10px; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.5rem; }
+  .popup-game { font-size: 18px; font-weight: 700; color: var(--text); margin-bottom: 0.75rem; }
+  .popup-row { display: flex; gap: 10px; align-items: center; }
+  .popup-exe { background: var(--surface); border: 1px solid var(--border); border-radius: 4px; padding: 10px 14px; font-family: 'Space Mono', monospace; font-size: 13px; color: var(--accent); flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .popup-copy { background: var(--accent); color: #000; border: none; border-radius: 4px; padding: 10px 20px; font-family: 'Space Grotesk', sans-serif; font-size: 14px; font-weight: 700; cursor: pointer; white-space: nowrap; transition: opacity 0.15s; flex-shrink: 0; }
+  .popup-copy:active { opacity: 0.8; }
+  .popup-copy.copied { background: #00d4a8; }
+  .popup-close { position: absolute; top: 1rem; right: 1.25rem; background: none; border: none; color: var(--muted); cursor: pointer; font-size: 20px; line-height: 1; padding: 4px; }
+  .popup-hint { font-size: 12px; color: var(--muted); margin-top: 0.6rem; }
+  .popup-hint strong { color: var(--accent2); }
 
-  header {
-    text-align: center;
-    padding: 3rem 1rem 2rem;
-    border-bottom: 1px solid var(--border);
-    margin-bottom: 2rem;
-  }
-
-  .tag {
-    display: inline-block;
-    font-family: 'Space Mono', monospace;
-    font-size: 11px;
-    letter-spacing: 0.15em;
-    color: var(--accent);
-    border: 1px solid var(--accent);
-    padding: 4px 12px;
-    border-radius: 2px;
-    margin-bottom: 1rem;
-    text-transform: uppercase;
-  }
-
-  h1 {
-    font-size: clamp(2rem, 5vw, 3.5rem);
-    font-weight: 700;
-    line-height: 1.1;
-    letter-spacing: -0.02em;
-  }
-
-  h1 span {
-    color: var(--accent);
-  }
-
-  .subtitle {
-    color: var(--muted);
-    font-size: 15px;
-    margin-top: 0.75rem;
-  }
-
-  .search-wrap {
-    max-width: 560px;
-    margin: 0 auto 2rem;
-    position: relative;
-  }
-
-  .search-wrap svg {
-    position: absolute;
-    left: 14px;
-    top: 50%;
-    transform: translateY(-50%);
-    color: var(--muted);
-    pointer-events: none;
-  }
-
-  input[type="text"] {
-    width: 100%;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    color: var(--text);
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 15px;
-    padding: 12px 16px 12px 44px;
-    outline: none;
-    transition: border-color 0.15s;
-  }
-
-  input[type="text"]:focus {
-    border-color: var(--accent);
-  }
-
-  input[type="text"]::placeholder {
-    color: var(--muted);
-  }
-
-  .stats {
-    text-align: center;
-    font-family: 'Space Mono', monospace;
-    font-size: 12px;
-    color: var(--muted);
-    margin-bottom: 1.5rem;
-    letter-spacing: 0.05em;
-  }
-
-  .stats span {
-    color: var(--accent);
-    font-weight: 700;
-  }
-
-  .grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    gap: 10px;
-    max-width: 1100px;
-    margin: 0 auto;
-  }
-
-  .game-card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    padding: 14px 16px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    transition: border-color 0.15s, background 0.15s;
-    cursor: default;
-  }
-
-  .game-card:hover {
-    border-color: var(--accent);
-    background: #1e1e28;
-  }
-
-  .game-num {
-    font-family: 'Space Mono', monospace;
-    font-size: 10px;
-    color: var(--muted);
-    min-width: 28px;
-    letter-spacing: 0.05em;
-  }
-
-  .game-name {
-    font-size: 14px;
-    font-weight: 500;
-    color: var(--text);
-    line-height: 1.3;
-    word-break: break-word;
-  }
-
-  .dot {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: var(--accent);
-    flex-shrink: 0;
-    margin-left: auto;
-    opacity: 0;
-    transition: opacity 0.15s;
-  }
-
-  .game-card:hover .dot {
-    opacity: 1;
-  }
-
-  .empty {
-    text-align: center;
-    color: var(--muted);
-    padding: 4rem 1rem;
-    grid-column: 1 / -1;
-    font-family: 'Space Mono', monospace;
-    font-size: 13px;
-  }
-
-  .empty strong {
-    display: block;
-    color: var(--text);
-    font-size: 16px;
-    margin-bottom: 0.5rem;
-    font-family: 'Space Grotesk', sans-serif;
-  }
-
-  footer {
-    text-align: center;
-    margin-top: 4rem;
-    font-size: 12px;
-    color: var(--muted);
-    font-family: 'Space Mono', monospace;
-    letter-spacing: 0.05em;
-  }
-
-  footer a {
-    color: var(--accent2);
-    text-decoration: none;
-  }
+  footer { text-align: center; margin-top: 4rem; font-size: 12px; color: var(--muted); font-family: 'Space Mono', monospace; letter-spacing: 0.05em; }
+  footer a { color: var(--accent2); text-decoration: none; }
 </style>
 </head>
 <body>
@@ -208,19 +65,27 @@
 <header>
   <div class="tag">qu1_qu3 · Twitch</div>
   <h1>Juegos <span>instalados</span></h1>
-  <p class="subtitle">Vota qué quieres ver en el stream</p>
+  <p class="subtitle">Toca un juego para copiar el exe y canjearlo en el stream</p>
 </header>
 
 <div class="search-wrap">
-  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-    <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
-  </svg>
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
   <input type="text" id="search" placeholder="Buscar juego..." autocomplete="off" spellcheck="false">
 </div>
 
 <p class="stats" id="stats">Cargando...</p>
-
 <div class="grid" id="grid"></div>
+
+<div class="popup" id="popup" role="dialog" aria-modal="true">
+  <button class="popup-close" id="popup-close" aria-label="Cerrar">✕</button>
+  <p class="popup-label">Exe del juego</p>
+  <p class="popup-game" id="popup-game"></p>
+  <div class="popup-row">
+    <div class="popup-exe" id="popup-exe"></div>
+    <button class="popup-copy" id="popup-copy">Copiar</button>
+  </div>
+  <p class="popup-hint">Pégalo en el canje de <strong>50,000 pts</strong> en el chat de Twitch</p>
+</div>
 
 <footer>
   <p>Actualizado automáticamente · <a href="https://twitch.tv/qu1_qu3" target="_blank">twitch.tv/qu1_qu3</a></p>
@@ -229,16 +94,23 @@
 <script>
 const IGNORE = [
   "microsoft", ".net", "visual c++", "redistributable", "openal",
-  "openjdk", "dosbox", "dos emulator", "thirdparty", "osd", "rayrun",
+  "openjdk", "dosbox", "dos emulator", "thirdparty", "osd",
   "rvrgame", "cppfps", "crashsight", "bootstrappackagedgame", "ulllaunch",
   "bravo", "celled", "storybook", "superquest", "tfm", "thankyouverycool",
   "rayfan", "raykit", "tiltility", "penguincolony", "noiseomatic",
   "everhoodcustom", "moonscraper", "incision aug", "incision dec",
   "incision nov", "incision oct", "incision sept", "made with löve",
   "f2 res patcher", "fallout 2 hi-res", "falloutclient", "fsd",
-  "lila", "pseudoregalia", "silas", "orion", "screen snail",
-  "screenbound demo", "dont fret", "all day dying", "mr. pompy",
-  "nowhere prophet", "bugs n' guns", "gravity circuit"
+  "lila", "silas", "orion", "screen snail", "screenbound demo",
+  "dont fret", "all day dying", "mr. pompy", "nowhere prophet",
+  "bugs n' guns", "gravity circuit", "godmode", "application rayrun",
+  "7-zip", "autotelic", "desktoppals", "kukoro", "noise-o-matic",
+  "openal installer", "serious sam 2", "rayman designer", "rayman",
+  "javaw", "java", "keytool", "kinit", "klist", "pack200", "policytool",
+  "rmid", "rmiregistry", "servertool", "tnameserv", "unpack200",
+  "startup.exe", "client.exe", "dosbox", "gogdosconfig", "setsound",
+  "mapper", "godmode", "payload", "dontfret", "orion", "stateofde",
+  "dedicatedserver", "secmd", "seriouseditor", "tablegenerator", "testgui"
 ];
 
 function shouldHide(name) {
@@ -252,7 +124,19 @@ async function loadGames() {
   try {
     const res = await fetch('games.json?t=' + Date.now());
     const data = await res.json();
-    allGames = data.games.filter(g => !shouldHide(g));
+
+    if (data.games.length === 0) throw new Error('empty');
+
+    const first = data.games[0];
+    if (typeof first === 'string') {
+      allGames = data.games
+        .filter(g => !shouldHide(g))
+        .map(g => ({ name: g, exe: g.toLowerCase().replace(/ /g, '') + '.exe' }));
+    } else {
+      allGames = data.games.filter(g => !shouldHide(g.name));
+    }
+
+    allGames.sort((a, b) => a.name.localeCompare(b.name));
     render(allGames);
   } catch(e) {
     document.getElementById('stats').textContent = 'Error cargando juegos';
@@ -271,18 +155,74 @@ function render(games) {
   }
 
   grid.innerHTML = games.map((g, i) =>
-    '<div class="game-card">' +
+    '<div class="game-card" data-name="' + g.name.replace(/"/g, '&quot;') + '" data-exe="' + g.exe + '">' +
     '<span class="game-num">' + String(i + 1).padStart(2, '0') + '</span>' +
-    '<span class="game-name">' + g + '</span>' +
-    '<span class="dot" aria-hidden="true"></span>' +
+    '<span class="game-name">' + g.name + '</span>' +
+    '<svg class="copy-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>' +
     '</div>'
   ).join('');
+
+  document.querySelectorAll('.game-card').forEach(card => {
+    card.addEventListener('click', () => openPopup(card.dataset.name, card.dataset.exe));
+  });
 }
+
+const popup = document.getElementById('popup');
+const popupGame = document.getElementById('popup-game');
+const popupExe = document.getElementById('popup-exe');
+const popupCopy = document.getElementById('popup-copy');
+const popupClose = document.getElementById('popup-close');
+
+function openPopup(name, exe) {
+  popupGame.textContent = name;
+  popupExe.textContent = exe;
+  popupCopy.textContent = 'Copiar';
+  popupCopy.classList.remove('copied');
+  popup.classList.add('visible');
+}
+
+function closePopup() {
+  popup.classList.remove('visible');
+}
+
+popupClose.addEventListener('click', closePopup);
+
+document.addEventListener('click', e => {
+  if (popup.classList.contains('visible') && !popup.contains(e.target) && !e.target.closest('.game-card'))
+    closePopup();
+});
+
+popupCopy.addEventListener('click', () => {
+  const text = popupExe.textContent;
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(text).then(() => {
+      popupCopy.textContent = '¡Copiado!';
+      popupCopy.classList.add('copied');
+      setTimeout(() => {
+        popupCopy.textContent = 'Copiar';
+        popupCopy.classList.remove('copied');
+      }, 2000);
+    });
+  } else {
+    const el = document.createElement('textarea');
+    el.value = text;
+    document.body.appendChild(el);
+    el.select();
+    document.execCommand('copy');
+    document.body.removeChild(el);
+    popupCopy.textContent = '¡Copiado!';
+    popupCopy.classList.add('copied');
+    setTimeout(() => {
+      popupCopy.textContent = 'Copiar';
+      popupCopy.classList.remove('copied');
+    }, 2000);
+  }
+});
 
 document.getElementById('search').addEventListener('input', function() {
   const q = this.value.toLowerCase().trim();
   if (!q) { render(allGames); return; }
-  render(allGames.filter(g => g.toLowerCase().includes(q)));
+  render(allGames.filter(g => g.name.toLowerCase().includes(q)));
 });
 
 loadGames();
