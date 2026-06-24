@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Comandos de qu1_qu3</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #0a0a0f;
+    --surface: #13131a;
+    --border: #2a2a3a;
+    --accent: #00ffc8;
+    --accent2: #ff4fa3;
+    --text: #e8e8f0;
+    --muted: #6b6b80;
+    --card: #18181f;
+    --inactive: #1a1a1a;
+    --inactive-text: #444455;
+    --inactive-border: #1e1e2a;
+  }
+  body { background: var(--bg); color: var(--text); font-family: 'Space Grotesk', sans-serif; min-height: 100vh; padding: 0 1rem 4rem; }
+
+  header { text-align: center; padding: 3rem 1rem 2rem; border-bottom: 1px solid var(--border); margin-bottom: 2rem; }
+  .tag { display: inline-block; font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 0.15em; color: var(--accent); border: 1px solid var(--accent); padding: 4px 12px; border-radius: 2px; margin-bottom: 1rem; text-transform: uppercase; }
+  h1 { font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 700; line-height: 1.1; letter-spacing: -0.02em; }
+  h1 span { color: var(--accent2); }
+  .subtitle { color: var(--muted); font-size: 15px; margin-top: 0.75rem; }
+
+  .nav-link { display: inline-block; margin-top: 1rem; font-family: 'Space Mono', monospace; font-size: 12px; color: var(--muted); text-decoration: none; border: 1px solid var(--border); padding: 6px 14px; border-radius: 2px; transition: border-color 0.15s, color 0.15s; }
+  .nav-link:hover { border-color: var(--accent); color: var(--accent); }
+
+  .search-wrap { max-width: 560px; margin: 0 auto 1.5rem; position: relative; }
+  .search-wrap svg { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--muted); pointer-events: none; }
+  input[type="text"] { width: 100%; background: var(--surface); border: 1px solid var(--border); border-radius: 4px; color: var(--text); font-family: 'Space Grotesk', sans-serif; font-size: 15px; padding: 12px 16px 12px 44px; outline: none; transition: border-color 0.15s; }
+  input[type="text"]:focus { border-color: var(--accent); }
+  input[type="text"]::placeholder { color: var(--muted); }
+
+  .filters { display: flex; gap: 8px; justify-content: center; margin-bottom: 2rem; flex-wrap: wrap; }
+  .filter-btn { font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 0.05em; padding: 6px 14px; border-radius: 2px; border: 1px solid var(--border); background: none; color: var(--muted); cursor: pointer; transition: all 0.15s; text-transform: uppercase; }
+  .filter-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .filter-btn.active { border-color: var(--accent); color: var(--accent); background: rgba(0,255,200,0.07); }
+  .filter-btn.active-only { border-color: var(--accent2); color: var(--accent2); }
+  .filter-btn.active-only.active { background: rgba(255,79,163,0.07); }
+
+  .stats { text-align: center; font-family: 'Space Mono', monospace; font-size: 12px; color: var(--muted); margin-bottom: 2rem; letter-spacing: 0.05em; }
+  .stats span { color: var(--accent); font-weight: 700; }
+  .stats .inactive-count { color: var(--muted); }
+
+  .content { max-width: 900px; margin: 0 auto; }
+
+  .group-section { margin-bottom: 2.5rem; }
+  .group-title { font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 0.15em; color: var(--muted); text-transform: uppercase; padding-bottom: 8px; border-bottom: 1px solid var(--border); margin-bottom: 10px; }
+  .group-title span { color: var(--accent); margin-left: 8px; }
+
+  .cmd-card { display: flex; align-items: center; gap: 12px; padding: 12px 16px; border-radius: 4px; margin-bottom: 6px; border: 1px solid var(--border); background: var(--card); transition: border-color 0.15s; }
+  .cmd-card.active-cmd:hover { border-color: var(--accent2); }
+  .cmd-card.inactive-cmd { border-color: var(--inactive-border); background: var(--inactive); opacity: 0.5; }
+
+  .cmd-status { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+  .active-cmd .cmd-status { background: var(--accent); box-shadow: 0 0 6px var(--accent); }
+  .inactive-cmd .cmd-status { background: var(--muted); }
+
+  .cmd-name { font-family: 'Space Mono', monospace; font-size: 14px; font-weight: 700; color: var(--text); min-width: 160px; }
+  .inactive-cmd .cmd-name { color: var(--inactive-text); }
+
+  .cmd-aliases { font-size: 12px; color: var(--muted); flex: 1; font-family: 'Space Mono', monospace; }
+  .cmd-aliases span { color: var(--accent); margin-right: 6px; }
+  .inactive-cmd .cmd-aliases span { color: var(--inactive-text); }
+
+  .cmd-badge { font-family: 'Space Mono', monospace; font-size: 10px; padding: 3px 8px; border-radius: 2px; letter-spacing: 0.05em; flex-shrink: 0; }
+  .active-cmd .cmd-badge { border: 1px solid var(--accent); color: var(--accent); }
+  .inactive-cmd .cmd-badge { border: 1px solid var(--inactive-border); color: var(--inactive-text); }
+
+  .empty { text-align: center; color: var(--muted); padding: 4rem 1rem; font-family: 'Space Mono', monospace; font-size: 13px; }
+  .empty strong { display: block; color: var(--text); font-size: 16px; margin-bottom: 0.5rem; font-family: 'Space Grotesk', sans-serif; }
+
+  footer { text-align: center; margin-top: 4rem; font-size: 12px; color: var(--muted); font-family: 'Space Mono', monospace; letter-spacing: 0.05em; }
+  footer a { color: var(--accent2); text-decoration: none; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="tag">qu1_qu3 · Twitch</div>
+  <h1>Coman<span>dos</span></h1>
+  <p class="subtitle">Lista de comandos disponibles en el stream</p>
+  <a class="nav-link" href="/quique-games/">← Ver juegos instalados</a>
+</header>
+
+<div class="search-wrap">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+  <input type="text" id="search" placeholder="Buscar comando..." autocomplete="off" spellcheck="false">
+</div>
+
+<div class="filters">
+  <button class="filter-btn active" data-filter="all">Todos</button>
+  <button class="filter-btn active-only" data-filter="active">Solo activos</button>
+  <button class="filter-btn" data-filter="inactive">Solo inactivos</button>
+</div>
+
+<p class="stats" id="stats">Cargando...</p>
+
+<div class="content" id="content"></div>
+
+<footer>
+  <p>Actualizado automáticamente · <a href="https://twitch.tv/qu1_qu3" target="_blank">twitch.tv/qu1_qu3</a></p>
+</footer>
+
+<script>
+let allCommands = [];
+let currentFilter = 'all';
+
+async function loadCommands() {
+  try {
+    const res = await fetch('commands.json?t=' + Date.now());
+    const data = await res.json();
+    allCommands = data.commands;
+    render();
+  } catch(e) {
+    document.getElementById('stats').textContent = 'Error cargando comandos';
+  }
+}
+
+function render() {
+  const q = document.getElementById('search').value.toLowerCase().trim();
+  const content = document.getElementById('content');
+  const stats = document.getElementById('stats');
+
+  let filtered = allCommands.filter(cmd => {
+    if (currentFilter === 'active' && !cmd.enabled) return false;
+    if (currentFilter === 'inactive' && cmd.enabled) return false;
+    if (q) {
+      return cmd.name.toLowerCase().includes(q) ||
+             (cmd.aliases && cmd.aliases.toLowerCase().includes(q)) ||
+             (cmd.group && cmd.group.toLowerCase().includes(q));
+    }
+    return true;
+  });
+
+  const activeCount = filtered.filter(c => c.enabled).length;
+  const inactiveCount = filtered.filter(c => !c.enabled).length;
+  stats.innerHTML = '<span>' + activeCount + '</span> activos · <span class="inactive-count">' + inactiveCount + '</span> inactivos';
+
+  if (filtered.length === 0) {
+    content.innerHTML = '<div class="empty"><strong>Sin resultados</strong>Intenta con otro término</div>';
+    return;
+  }
+
+  // Agrupar por group
+  const groups = {};
+  filtered.forEach(cmd => {
+    const g = cmd.group || 'Sin grupo';
+    if (!groups[g]) groups[g] = [];
+    groups[g].push(cmd);
+  });
+
+  // Ordenar grupos — activos primero dentro de cada grupo
+  let html = '';
+  Object.keys(groups).sort().forEach(groupName => {
+    const cmds = groups[groupName].sort((a, b) => {
+      if (a.enabled !== b.enabled) return b.enabled ? 1 : -1;
+      return a.name.localeCompare(b.name);
+    });
+
+    const activeInGroup = cmds.filter(c => c.enabled).length;
+    html += '<div class="group-section">';
+    html += '<div class="group-title">' + groupName + '<span>' + activeInGroup + '/' + cmds.length + '</span></div>';
+
+    cmds.forEach(cmd => {
+      const cls = cmd.enabled ? 'active-cmd' : 'inactive-cmd';
+      const badge = cmd.enabled ? 'ACTIVO' : 'INACTIVO';
+      const aliases = cmd.aliases
+        ? cmd.aliases.split('|').map(a => '<span>' + a + '</span>').join('')
+        : '';
+
+      html += '<div class="cmd-card ' + cls + '">';
+      html += '<div class="cmd-status"></div>';
+      html += '<div class="cmd-name">' + cmd.name + '</div>';
+      html += '<div class="cmd-aliases">' + aliases + '</div>';
+      html += '<div class="cmd-badge">' + badge + '</div>';
+      html += '</div>';
+    });
+
+    html += '</div>';
+  });
+
+  content.innerHTML = html;
+}
+
+document.getElementById('search').addEventListener('input', render);
+
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    this.classList.add('active');
+    currentFilter = this.dataset.filter;
+    render();
+  });
+});
+
+loadCommands();
+</script>
+</body>
+</html>
