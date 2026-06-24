@@ -115,7 +115,7 @@ let currentFilter = 'all';
 
 async function loadCommands() {
   try {
-    const res = await fetch('/quique-games/commands.json?t=' + Date.now());
+    const res = await fetch('https://quique-r.github.io/quique-games/commands.json?t=' + Date.now());
     const data = await res.json();
     allCommands = data.commands;
     render();
