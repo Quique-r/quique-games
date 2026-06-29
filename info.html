@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Info · qu1_qu3</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #0a0a0f;
+    --surface: #13131a;
+    --border: #2a2a3a;
+    --accent: #00ffc8;
+    --accent2: #ff4fa3;
+    --accent3: #ffe066;
+    --accent4: #7b5cfa;
+    --text: #e8e8f0;
+    --muted: #6b6b80;
+    --card: #18181f;
+  }
+  body { background: var(--bg); color: var(--text); font-family: 'Space Grotesk', sans-serif; min-height: 100vh; padding: 0 1rem 4rem; }
+
+  header { text-align: center; padding: 3rem 1rem 2rem; border-bottom: 1px solid var(--border); margin-bottom: 3rem; }
+  .tag { display: inline-block; font-family: 'Space Mono', monospace; font-size: 11px; letter-spacing: 0.15em; color: var(--accent); border: 1px solid var(--accent); padding: 4px 12px; border-radius: 2px; margin-bottom: 1rem; text-transform: uppercase; }
+  h1 { font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 700; line-height: 1.1; letter-spacing: -0.02em; }
+  h1 span { color: var(--accent2); }
+  .subtitle { color: var(--muted); font-size: 15px; margin-top: 0.75rem; }
+
+  .nav-links { display: flex; gap: 10px; justify-content: center; margin-top: 1.25rem; flex-wrap: wrap; }
+  .nav-link { font-family: 'Space Mono', monospace; font-size: 12px; color: var(--muted); text-decoration: none; border: 1px solid var(--border); padding: 6px 14px; border-radius: 2px; transition: border-color 0.15s, color 0.15s; }
+  .nav-link:hover { border-color: var(--accent); color: var(--accent); }
+
+  .content { max-width: 900px; margin: 0 auto; }
+
+  /* Sección */
+  .section { margin-bottom: 3rem; }
+  .section-header { display: flex; align-items: center; gap: 12px; margin-bottom: 1.25rem; padding-bottom: 10px; border-bottom: 1px solid var(--border); }
+  .section-icon { font-size: 20px; }
+  .section-title { font-size: 18px; font-weight: 700; letter-spacing: -0.01em; }
+  .section-desc { font-size: 13px; color: var(--muted); margin-top: 2px; }
+
+  /* Cards de interacciones */
+  .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 10px; }
+
+  .card { background: var(--card); border: 1px solid var(--border); border-radius: 4px; padding: 16px; transition: border-color 0.15s; }
+  .card:hover { border-color: var(--border); }
+
+  .card-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
+  .card-cost { font-family: 'Space Mono', monospace; font-size: 12px; font-weight: 700; padding: 4px 10px; border-radius: 2px; }
+
+  .bits .card-cost { color: var(--accent3); border: 1px solid var(--accent3); background: rgba(255,224,102,0.07); }
+  .bits { border-left: 2px solid var(--accent3); }
+
+  .subs .card-cost { color: var(--accent4); border: 1px solid var(--accent4); background: rgba(123,92,250,0.07); }
+  .subs { border-left: 2px solid var(--accent4); }
+
+  .points .card-cost { color: var(--accent); border: 1px solid var(--accent); background: rgba(0,255,200,0.07); }
+  .points { border-left: 2px solid var(--accent); }
+
+  .card-emoji { font-size: 18px; }
+  .card-name { font-size: 15px; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+  .card-desc { font-size: 13px; color: var(--muted); line-height: 1.5; }
+  .card-tag { display: inline-block; font-family: 'Space Mono', monospace; font-size: 10px; color: var(--accent2); border: 1px solid var(--accent2); padding: 2px 8px; border-radius: 2px; margin-top: 10px; letter-spacing: 0.05em; }
+
+  /* WIP banner */
+  .wip { text-align: center; padding: 3rem 1rem; border: 1px dashed var(--border); border-radius: 4px; color: var(--muted); font-family: 'Space Mono', monospace; font-size: 13px; margin-bottom: 1rem; }
+  .wip strong { display: block; color: var(--text); font-size: 16px; margin-bottom: 0.5rem; font-family: 'Space Grotesk', sans-serif; }
+
+  footer { text-align: center; margin-top: 4rem; font-size: 12px; color: var(--muted); font-family: 'Space Mono', monospace; letter-spacing: 0.05em; }
+  footer a { color: var(--accent2); text-decoration: none; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="tag">qu1_qu3 · Twitch</div>
+  <h1>Info del <span>stream</span></h1>
+  <p class="subtitle">Cómo interactuar, apoyar y hacer caos</p>
+  <div class="nav-links">
+    <a class="nav-link" href="/quique-games/">🎮 Juegos</a>
+    <a class="nav-link" href="/quique-games/commands.html">⌨️ Comandos</a>
+  </div>
+</header>
+
+<div class="content" id="content">
+  <div class="wip"><strong>Cargando...</strong></div>
+</div>
+
+<footer>
+  <p>Actualizado automáticamente · <a href="https://twitch.tv/qu1_qu3" target="_blank">twitch.tv/qu1_qu3</a></p>
+</footer>
+
+<script>
+const SECTION_META = {
+  bits:   { icon: '💎', title: 'Bits — Caos controlado',   desc: 'Cuantos más bits, más tiempo dura el caos',        cls: 'bits'   },
+  subs:   { icon: '⭐', title: 'Suscripciones',             desc: 'Apoya el stream y desbloquea beneficios',          cls: 'subs'   },
+  points: { icon: '🎯', title: 'Puntos de canal',           desc: 'Acumula puntos viendo el stream y canjéalos',      cls: 'points' }
+};
+
+function buildCard(item, cls) {
+  return `
+    <div class="card ${cls}">
+      <div class="card-top">
+        <span class="card-emoji">${item.emoji}</span>
+        <span class="card-cost">${item.cost}</span>
+      </div>
+      <div class="card-name">${item.title}</div>
+      <div class="card-desc">${item.desc}</div>
+      ${item.tag ? `<span class="card-tag">${item.tag}</span>` : ''}
+    </div>`;
+}
+
+function buildSection(key, items) {
+  const meta = SECTION_META[key];
+  const cards = items.length > 0
+    ? items.map(i => buildCard(i, meta.cls)).join('')
+    : `<div class="wip"><strong>Próximamente</strong>¡Vuelve pronto!</div>`;
+
+  return `
+    <div class="section">
+      <div class="section-header">
+        <span class="section-icon">${meta.icon}</span>
+        <div>
+          <div class="section-title">${meta.title}</div>
+          <div class="section-desc">${meta.desc}</div>
+        </div>
+      </div>
+      <div class="cards">${cards}</div>
+    </div>`;
+}
+
+async function loadInfo() {
+  const content = document.getElementById('content');
+  try {
+    const res = await fetch('https://quique-r.github.io/quique-games/info.json?t=' + Date.now());
+    const data = await res.json();
+
+    content.innerHTML =
+      buildSection('bits',   data.bits   || []) +
+      buildSection('points', data.points || []) +
+      buildSection('subs',   data.subs   || []);
+  } catch(e) {
+    content.innerHTML = '<div class="wip"><strong>Error cargando info</strong>Intenta recargar la página</div>';
+  }
+}
+
+loadInfo();
+</script>
+</body>
+</html>
